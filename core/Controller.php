@@ -1,4 +1,5 @@
 <?php
+//test git
 class Controller {
     // Fonction qui affiche une vue (un fichier HTML/PHP)
     protected function render($view, $data = []) {
