@@ -639,3 +639,62 @@ body {
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.7; transform: scale(1.05); }
 }
+.capteur-card {
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+    padding: 22px;
+    margin: 22px auto;
+    border: 1px solid var(--glass-border);
+    max-width: 750px;
+    box-shadow: 0 0 18px rgba(0, 255, 157, 0.12);
+}
+
+.capteur-card summary {
+    cursor: pointer;
+    font-weight: 900;
+    font-size: 1.15rem;
+    color: var(--primary);
+    font-family: 'Orbitron', monospace;
+    margin-bottom: 15px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 255, 157, 0.15);
+    padding: 12px 5px;
+    gap: 20px;
+}
+
+.info-label {
+    font-weight: 700;
+    color: white;
+}
+
+.info-value {
+    color: var(--primary);
+    font-weight: 600;
+    text-align: right;
+}
+
+.condition-line {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 14px 0;
+    font-weight: 600;
+}
+
+.condition-line input[type="checkbox"] {
+    accent-color: #00ff9d;
+    width: 18px;
+    height: 18px;
+}
+.menu-salle {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
