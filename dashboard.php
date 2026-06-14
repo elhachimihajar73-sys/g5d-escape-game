@@ -75,31 +75,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['answer'])) {
 
         <?php echo $message; ?>
 
-        <?php if($currentProgress < 100): ?>
-            <div class="enigma-card">
-                <h2>🔐 Énigme</h2>
-                <div class="enigma-text">
-                    "Je suis invisible mais je me fais sentir,<br>
-                    Sans moi plus rien ne peut s'allumer.<br>
-                    Je circule partout mais on ne peut me voir,<br>
-                    Je suis la force qui fait tout bouger."
-                </div>
-                <div class="hint">💡 Indice : Ça fait tourner les ampoules et les moteurs...</div>
-                
-                <form method="POST" class="answer-form">
-                    <input type="text" name="answer" placeholder="Votre réponse..." required autocomplete="off">
-                    <button type="submit">Vérifier</button>
-                </form>
+        <div class="enigma-card">
+            <h2>Choisir une action</h2>
+
+            <div class="menu-salle">
+                <a href="enigmes.php" class="back-link">🔐 Résoudre les énigmes</a>
+                <a href="gestion_capteurs.php" class="back-link">💡 Gestion des capteurs/actionneurs</a>
+                <a href="index.php" class="back-link">← Retour à l'accueil</a>
             </div>
-        <?php else: ?>
-            <div class="enigma-card completion-card">
-                <div class="trophy">🏆</div>
-                <h2>Mission accomplie !</h2>
-                <p>Vous avez maîtrisé la salle Électricité à 100% !</p>
-                <p>La lumière est allumée, vous pouvez passer à la prochaine salle.</p>
-                <div style="font-size: 1.5rem; margin-top: 20px;">✨ ⚡ ✨</div>
-            </div>
-        <?php endif; ?>
+        </div>
 
         <div style="text-align: center;">
             <a href="index.php" class="back-link">← Retour à l'accueil</a>
