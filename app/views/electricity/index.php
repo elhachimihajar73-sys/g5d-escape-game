@@ -138,7 +138,7 @@ if(isset($_SESSION['user_id'])) {
 <script>
     function goToRoom() {
         <?php if(isset($_SESSION['user_id'])): ?>
-        window.location.href = 'electricity_router.php';
+        window.location.href = 'electricity_router.php?page=electricity';
         <?php else: ?>
         if(confirm('Veuillez vous connecter pour accéder à la salle Électricité')) {
             window.location.href = 'login.php';
