@@ -57,6 +57,7 @@ function validerCode() {
 }
 
 function deverrouillerBouton() {
+    document.querySelectorAll('.dot').forEach(d => d.classList.add('vert'));
     const btn = document.getElementById('bouton-poussoir');
     btn.disabled = false;
     btn.classList.remove('locked');

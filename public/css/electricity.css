@@ -10,15 +10,19 @@ body {
 .alert-bar {
     background: #111;
     border-bottom: 2px solid #3a7bd5;
-    padding: 10px 30px;
+    padding: 15px 30px;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 15px;
     color: #3a7bd5;
     font-weight: bold;
+    font-size: 1.3rem;
+    letter-spacing: 3px;
 }
-.dot { width: 12px; height: 12px; background: #888; border-radius: 50%; display: inline-block; }
-.alert-bar p { font-size: 0.85rem; color: #aaa; }
+.dot { width: 14px; height: 14px; background: #ff4c4c; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #ff4c4c; }
+.dot.vert { background: #4cff4c; box-shadow: 0 0 8px #4cff4c; }
+.alert-bar p { font-size: 1rem; color: #aaa; }
 
 .timer { margin-left: auto; font-size: 1.4rem; color: #ff4c4c; font-weight: bold; letter-spacing: 2px; }
 .timer.urgent { animation: clignoter 0.5s infinite; }
