@@ -109,6 +109,5 @@ h1 { font-size: 2rem; letter-spacing: 4px; margin-bottom: 20px; }
 @keyframes pulse { 0%,100% { box-shadow: 0 0 15px #f0c030; } 50% { box-shadow: 0 0 40px #f0c030; } }
 
 /* Overlay temps écoulé */
-.overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 999; }
-.overlay-content { text-align: center; color: #ff4c4c; }
-.overlay-content h2 { font-size: 3rem; margin-bottom: 20px; }
+.overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 999; }
+.overlay:not(.hidden) { display: flex; }
