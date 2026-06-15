@@ -17,7 +17,8 @@
         .nav-btn { padding: 8px 22px; border-radius: 40px; text-decoration: none; color: white; transition: all 0.3s ease; font-weight: 500; font-size: 0.9rem; }
         .nav-btn:hover { background: var(--primary); color: var(--dark); transform: translateY(-2px); }
         .user-greeting { color: var(--primary); font-size: 0.9rem; }
-        .container { max-width: 800px; margin: 120px auto 40px; padding: 20px; text-align: center; }
+        .alert-bar { margin-top: 80px; }
+        .container { max-width: 800px; margin: 30px auto 40px; padding: 20px; text-align: center; }
     </style>
 </head>
 <body>
