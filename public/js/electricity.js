@@ -1,4 +1,3 @@
-// TIMER 15 minutes = 900 secondes
 let secondesRestantes = 900;
 let timerInterval = setInterval(() => {
     secondesRestantes--;
@@ -13,7 +12,7 @@ let timerInterval = setInterval(() => {
 
     if (secondesRestantes <= 0) {
         clearInterval(timerInterval);
-        document.getElementById('overlay-bloque').classList.remove('hidden');
+        document.getElementById('overlay-bloque').classList.add('show');
     }
 }, 1000);
 
