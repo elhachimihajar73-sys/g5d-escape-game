@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 session_start();
 require_once 'config/database.php';
 
@@ -408,3 +409,12 @@ if(isset($_SESSION['user_id'])) {
     </script>
 </body>
 </html>
+=======
+// Point d'entrée unique du site
+// Toutes les URLs passent par ici
+
+require_once __DIR__ . '/core/Router.php'; // charge le Router
+
+$router = new Router();
+$router->dispatch(); // lance le routage
+>>>>>>> g5d-frontend

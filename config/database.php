@@ -13,6 +13,7 @@ try {
     die("Erreur de connexion : " . $e->getMessage());
 }
 
+// Fonctions pour les autres salles
 function updateProgress($userId, $progression) {
     global $pdo;
     $stmt = $pdo->prepare("UPDATE G5D_progression SET salle_electricite = ? WHERE user_id = ?");
@@ -25,4 +26,9 @@ function getProgress($userId) {
     $stmt->execute([$userId]);
     return $stmt->fetch();
 }
-?>
+
+// Fonction pour le MVC G5D
+function getDB() {
+    global $pdo;
+    return $pdo;
+}
