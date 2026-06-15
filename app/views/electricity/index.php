@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <title>Electricity — G5D</title>
     <link rel="stylesheet" href="/g5d-escape-game/public/css/electricity.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
+
+<?php require_once __DIR__ . '/../../../navbar.php'; ?>
 
 <div class="alert-bar">
     <span class="dot"></span> ALERT <span class="dot"></span>
@@ -51,7 +54,7 @@
     </div>
 </div>
 
-<div id="overlay-bloque" class="overlay hidden">
+<div id="overlay-bloque" class="overlay">
     <div class="overlay-content">
         <h2>⏰ Temps écoulé !</h2>
         <p>Le réacteur est définitivement hors ligne.</p>
