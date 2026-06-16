@@ -7,9 +7,15 @@ if(!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// Récupère les dernières données capteurs
-$stmt = $pdo->query("SELECT * FROM G5D_progression");
-$données = $stmt->fetchAll();
+$stmt = $pdo->query("SELECT * FROM G5D_capteur_logs ORDER BY date_mesure DESC LIMIT 20");
+$logs = $stmt->fetchAll();
+
+$labels = [];
+$valeurs = [];
+foreach(array_reverse($logs) as $log) {
+    $labels[] = date('H:i:s', strtotime($log['date_mesure']));
+    $valeurs[] = $log['valeur'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -17,6 +23,7 @@ $données = $stmt->fetchAll();
     <meta charset="UTF-8">
     <title>Données — G5D</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root { --primary: #00ff9d; --dark: #0a0a0f; --glass: rgba(10,10,15,0.8); --glass-border: rgba(0,255,157,0.2); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -38,8 +45,6 @@ $données = $stmt->fetchAll();
         th { background: rgba(0,255,157,0.1); color: var(--primary); padding: 12px; text-align: left; border-bottom: 1px solid var(--glass-border); }
         td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #ccc; }
         tr:hover td { background: rgba(0,255,157,0.05); }
-        .progress-bar { height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-top: 5px; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), #00ffcc); border-radius: 4px; }
         .refresh-info { text-align: center; color: #666; font-size: 0.8rem; margin-top: 20px; }
     </style>
 </head>
@@ -48,34 +53,60 @@ $données = $stmt->fetchAll();
 <?php require_once 'navbar.php'; ?>
 
 <div class="container">
-    <h1>📊 DONNÉES EN TEMPS RÉEL</h1>
+    <h1>📊 DONNÉES CAPTEURS G5D</h1>
 
     <div class="data-card">
-        <h2>⚡ PROGRESSION DES SALLES</h2>
+        <h2>📈 ÉVOLUTION DU CAPTEUR LDR</h2>
+        <canvas id="graphique" height="100"></canvas>
+    </div>
+
+    <div class="data-card">
+        <h2>📋 HISTORIQUE DES MESURES</h2>
         <table>
             <tr>
-                <th>Salle</th>
-                <th>Progression</th>
-                <th>Barre</th>
+                <th>Heure</th>
+                <th>Capteur</th>
+                <th>Valeur</th>
+                <th>Unité</th>
             </tr>
-            <?php foreach($données as $row): ?>
+            <?php foreach($logs as $log): ?>
                 <tr>
-                    <td><?= htmlspecialchars($row['salle']) ?></td>
-                    <td><?= $row['progress'] ?>%</td>
-                    <td>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: <?= $row['progress'] ?>%"></div>
-                        </div>
-                    </td>
+                    <td><?= date('H:i:s', strtotime($log['date_mesure'])) ?></td>
+                    <td><?= htmlspecialchars($log['capteur']) ?></td>
+                    <td><?= $log['valeur'] ?></td>
+                    <td><?= htmlspecialchars($log['unite']) ?></td>
                 </tr>
             <?php endforeach; ?>
         </table>
     </div>
 
-    <p class="refresh-info">🔄 Page rafraîchie automatiquement toutes les 10 secondes</p>
+    <p class="refresh-info">🔄 Rafraîchissement automatique toutes les 10 secondes</p>
 </div>
 
 <script>
+    const ctx = document.getElementById('graphique').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: <?= json_encode($labels) ?>,
+            datasets: [{
+                label: 'LDR (lux)',
+                data: <?= json_encode($valeurs) ?>,
+                borderColor: '#00ff9d',
+                backgroundColor: 'rgba(0,255,157,0.1)',
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            plugins: { legend: { labels: { color: '#fff' } } },
+            scales: {
+                x: { ticks: { color: '#aaa' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                y: { ticks: { color: '#aaa' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+            }
+        }
+    });
+
     setTimeout(() => location.reload(), 10000);
 </script>
 </body>
