@@ -74,75 +74,6 @@ if(isset($_SESSION['user_id'])) {
         @media (max-width: 1000px) { .rooms-grid { grid-template-columns: repeat(3, 1fr); } .nav-center { display: none; } }
         @media (max-width: 650px) { .rooms-grid { grid-template-columns: repeat(2, 1fr); } .glitch { font-size: 2rem; } }
         @media (max-width: 450px) { .rooms-grid { grid-template-columns: 1fr; } }
-        .side-tools-panel {
-            position: fixed;
-            right: 35px;
-            top: 120px;
-            width: 320px;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 24px;
-            box-shadow: 0 0 22px rgba(0, 255, 157, 0.18);
-            z-index: 50;
-        }
-
-        .side-user {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .side-user-icon {
-            font-size: 2rem;
-        }
-
-        .side-user h3 {
-            color: var(--primary);
-            margin: 0;
-        }
-
-        .side-user p {
-            color: #ccc;
-            margin: 4px 0 0;
-        }
-
-        .side-separator {
-            height: 1px;
-            background: rgba(255, 255, 255, 0.15);
-            margin: 22px 0;
-        }
-
-        .side-title {
-            color: var(--primary);
-            text-align: center;
-            margin-bottom: 18px;
-            font-size: 1rem;
-        }
-
-        .side-tool-link {
-            display: grid;
-            grid-template-columns: 45px 1fr 20px;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: white;
-            background: rgba(0, 255, 157, 0.08);
-            border: 1px solid rgba(0, 255, 157, 0.25);
-            border-radius: 16px;
-            padding: 14px;
-            margin-bottom: 12px;
-            font-weight: 700;
-        }
-
-        .side-tool-link:hover {
-            background: rgba(0, 255, 157, 0.18);
-            transform: translateY(-2px);
-        }
-
-        .tool-icon {
-            font-size: 1.6rem;
-        }
     </style>
 </head>
 <body>
@@ -214,23 +145,6 @@ if(isset($_SESSION['user_id'])) {
             <h3>Salle Serres</h3>
             <div class="lock-status locked"><span>🔒</span><span>Fermé</span></div>
         </div>
-    </div>
-    <div class="side-tools-panel">
-
-
-        <h3 class="side-title">Outils Salle Électricité ⚡</h3>
-
-        <a href="gestion_capteurs.php" class="side-tool-link">
-            <span class="tool-icon">💡</span>
-            <span>Gestion des capteurs / actionneurs</span>
-            <span>›</span>
-        </a>
-
-        <a href="donnees_capteurs.php" class="side-tool-link">
-            <span class="tool-icon">📊</span>
-            <span>Affichage des données / actions</span>
-            <span>›</span>
-        </a>
     </div>
 </main>
 
