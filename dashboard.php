@@ -7,77 +7,76 @@ if(!isset($_SESSION['user_id'])) {
     exit();
 }
 
-$stmt = $pdo->prepare("SELECT salle_electricite FROM G5D_progression WHERE user_id = ?");
-$stmt->execute([$_SESSION['user_id']]);
-$progress = $stmt->fetch();
-$currentProgress = $progress ? $progress['salle_electricite'] : 0;
-$message = '';
-
-if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['answer'])) {
-    $answer = strtolower(trim($_POST['answer']));
-    $correctAnswers = ['electricite', 'l\'electricité', 'le courant', 'courant', 'l\'energie', 'energie', 'électricité'];
-    
-    if(in_array($answer, $correctAnswers)) {
-        $newProgress = min(100, $currentProgress + 25);
-        updateProgress($_SESSION['user_id'], $newProgress);
-        $currentProgress = $newProgress;
-        if($newProgress == 100) {
-            $message = '<div class="success-message">🏆 FÉLICITATIONS ! Salle terminée à 100% ! 🏆</div>';
-        } else {
-            $message = '<div class="success-message">✨ Bonne réponse ! Progression +25% ✨</div>';
-        }
-    } else {
-        $message = '<div class="error-message">❌ Mauvaise réponse, réessayez ! ❌</div>';
-    }
-}
+// Récupère les dernières données capteurs
+$stmt = $pdo->query("SELECT * FROM G5D_progression");
+$données = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salle Électricité - Escape Game G5D</title>
+    <title>Données — G5D</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root { --primary: #00ff9d; --dark: #0a0a0f; --glass: rgba(10,10,15,0.8); --glass-border: rgba(0,255,157,0.2); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: radial-gradient(ellipse at center, #0d0d1a 0%, #05050a 100%); min-height: 100vh; color: white; }
+        .glass-nav { position: fixed; top: 20px; left: 20px; right: 20px; background: var(--glass); backdrop-filter: blur(12px); border-radius: 60px; padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--glass-border); z-index: 100; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+        .logo { display: flex; align-items: center; gap: 10px; font-family: 'Orbitron', monospace; font-size: 1.2rem; font-weight: bold; }
+        .logo-icon { font-size: 1.6rem; }
+        .logo-text { background: linear-gradient(135deg, var(--primary), #00ffcc); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .nav-center { display: flex; gap: 10px; position: absolute; left: 50%; transform: translateX(-50%); }
+        .nav-links { display: flex; gap: 15px; align-items: center; }
+        .nav-btn { padding: 8px 22px; border-radius: 40px; text-decoration: none; color: white; transition: all 0.3s ease; font-weight: 500; font-size: 0.9rem; }
+        .nav-btn:hover { background: var(--primary); color: var(--dark); transform: translateY(-2px); }
+        .user-greeting { color: var(--primary); font-size: 0.9rem; }
+        .container { max-width: 900px; margin: 120px auto 40px; padding: 20px; }
+        h1 { font-family: 'Orbitron', monospace; text-align: center; font-size: 2rem; letter-spacing: 4px; margin-bottom: 40px; color: var(--primary); }
+        .data-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 20px; padding: 25px; margin-bottom: 20px; }
+        .data-card h2 { font-size: 1rem; color: var(--primary); margin-bottom: 15px; font-family: 'Orbitron', monospace; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: rgba(0,255,157,0.1); color: var(--primary); padding: 12px; text-align: left; border-bottom: 1px solid var(--glass-border); }
+        td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #ccc; }
+        tr:hover td { background: rgba(0,255,157,0.05); }
+        .progress-bar { height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-top: 5px; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), #00ffcc); border-radius: 4px; }
+        .refresh-info { text-align: center; color: #666; font-size: 0.8rem; margin-top: 20px; }
+    </style>
 </head>
-<body class="room-dashboard">
-    <nav class="glass-nav">
-        <div class="logo">
-            <span class="logo-icon">⚡</span>
-            <span class="logo-text">Escape Game - G5D</span>
-        </div>
-        <div class="nav-links">
-            <span class="user-greeting">👤 <?php echo htmlspecialchars($_SESSION['username']); ?></span>
-            <a href="logout.php" class="nav-btn">Déconnexion</a>
-        </div>
-    </nav>
+<body>
 
-    <div class="dashboard-container">
-        <div class="room-title">
-            <h1>SALLE ÉLECTRICITÉ</h1>
-            <div class="cadena-badge">
-                <span>🔓</span>
-                <span>Cadenas ouvert - Salle accessible</span>
-            </div>
-        </div>
+<?php require_once 'navbar.php'; ?>
 
+<div class="container">
+    <h1>📊 DONNÉES EN TEMPS RÉEL</h1>
 
-
-        <?php echo $message; ?>
-
-        <div class="enigma-card">
-            <h2>Choisir une action</h2>
-
-            <div class="menu-salle">
-                <a href="enigmes.php" class="back-link">🔐 Résoudre les énigmes</a>
-                <a href="gestion_capteurs.php" class="back-link">💡 Gestion des capteurs/actionneurs</a>
-
-            </div>
-        </div>
-
-        <div style="text-align: center;">
-            <a href="index.php" class="back-link">← Retour à l'accueil</a>
-        </div>
+    <div class="data-card">
+        <h2>⚡ PROGRESSION DES SALLES</h2>
+        <table>
+            <tr>
+                <th>Salle</th>
+                <th>Progression</th>
+                <th>Barre</th>
+            </tr>
+            <?php foreach($données as $row): ?>
+                <tr>
+                    <td><?= htmlspecialchars($row['salle']) ?></td>
+                    <td><?= $row['progress'] ?>%</td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: <?= $row['progress'] ?>%"></div>
+                        </div>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
     </div>
+
+    <p class="refresh-info">🔄 Page rafraîchie automatiquement toutes les 10 secondes</p>
+</div>
+
+<script>
+    setTimeout(() => location.reload(), 10000);
+</script>
 </body>
 </html>
