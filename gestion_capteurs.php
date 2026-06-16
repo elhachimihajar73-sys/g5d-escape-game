@@ -38,6 +38,26 @@ if(!isset($_SESSION['user_id'])) {
     </div>
 </nav>
 
+<nav class="glass-nav">
+    <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">Escape Game - G5D</span>
+    </div>
+    <div class="nav-center">
+        <a href="/g5d-escape-game/accueil.php" class="nav-btn">🏠 Accueil</a>
+        <a href="/g5d-escape-game/gestion_capteurs.php" class="nav-btn">⚙️ Capteurs</a>
+        <a href="/g5d-escape-game/dashboard.php" class="nav-btn">📊 Données</a>
+    </div>
+    <div class="nav-links">
+        <?php if(isset($_SESSION['user_id'])): ?>
+            <span class="user-greeting">👤 <?php echo htmlspecialchars($_SESSION['username']); ?></span>
+            <a href="/g5d-escape-game/logout.php" class="nav-btn">Déconnexion</a>
+        <?php else: ?>
+            <a href="/g5d-escape-game/login.php" class="nav-btn">Connexion</a>
+        <?php endif; ?>
+    </div>
+</nav>
+
 <div class="dashboard-container">
 
     <div class="room-title">
@@ -63,24 +83,7 @@ if(!isset($_SESSION['user_id'])) {
         </div>
     </details>
 
-    <details class="capteur-card">
-        <summary>État du bouton</summary>
 
-        <div class="info-row">
-            <span class="info-label">Nom</span>
-            <span class="info-value">Bouton poussoir</span>
-        </div>
-
-        <div class="info-row">
-            <span class="info-label">État actuel</span>
-            <span class="info-value">Non appuyé</span>
-        </div>
-
-        <div class="info-row">
-            <span class="info-label">Dernière action</span>
-            <span class="info-value">Aucune</span>
-        </div>
-    </details>
 
     <details class="capteur-card">
         <summary>Actionneur LED</summary>
@@ -129,10 +132,7 @@ if(!isset($_SESSION['user_id'])) {
             Énigme 4 résolue
         </label>
 
-        <label class="condition-line">
-            <input type="checkbox" disabled>
-            Bouton appuyé
-        </label>
+
     </details>
 
 </div>
