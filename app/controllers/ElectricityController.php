@@ -29,4 +29,26 @@ class ElectricityController extends Controller {
         echo json_encode(['succes' => $correct]); // envoie true ou false au JavaScript
         exit;
     }
+    // ⭐ AJOUTE TA FONCTION ICI ⭐
+    public function recevoirLDR() {
+        header('Content-Type: text/plain');
+
+        // 1) Lire la valeur envoyée par Python
+        $valeur = $_POST['tiva'] ?? '';
+
+        // 2) Extraire la valeur LDR
+        if (preg_match('/LDR=(\d+)/', $valeur, $match)) {
+            $ldr = intval($match[1]);
+        } else {
+            echo "WAIT";
+            return;
+        }
+
+        // 3) Logique du jeu
+        if ($ldr > 3000) {
+            echo "OK";
+        } else {
+            echo "WAIT";
+        }
+    }
 }
