@@ -1,24 +1,42 @@
 <?php
 class Router {
     public function dispatch() {
-        // Lit l'URL : ?page=electricity
-        $page = $_GET['page'] ?? 'electricity'; // si pas de page, electricity par défaut
-        $action = $_GET['action'] ?? 'index';   // si pas d'action, index par défaut
+        $page = $_GET['page'] ?? 'login';
+        $action = $_GET['action'] ?? 'index';
 
         switch ($page) {
+            case 'login':
+                require_once __DIR__ . '/../login.php';
+                break;
+
+            case 'register':
+                require_once __DIR__ . '/../register.php';
+                break;
+
+            case 'accueil':
+                require_once __DIR__ . '/../accueil.php';
+                break;
+
             case 'electricity':
-                // Charge le controller de la salle electricity
                 require_once __DIR__ . '/../app/controllers/ElectricityController.php';
                 $controller = new ElectricityController();
-
                 if ($action === 'valider') {
-                    $controller->validerCode(); // appelé quand on valide le code PIN
+                    $controller->validerCode();
                 } else {
-                    $controller->index(); // affiche la page principale
+                    $controller->index();
                 }
                 break;
+
+            case 'capteurs':
+                require_once __DIR__ . '/../gestion_capteurs.php';
+                break;
+
+            case 'dashboard':
+                require_once __DIR__ . '/../dashboard.php';
+                break;
+
             default:
-                echo "Page introuvable.";
+                require_once __DIR__ . '/../login.php';
         }
     }
 }

@@ -6,9 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="ac22756a-1d8c-4712-acae-01e27a9ec1b3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gestion_capteurs.php" beforeDir="false" afterPath="$PROJECT_DIR$/gestion_capteurs.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_db.php" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +82,7 @@
       <option name="presentableId" value="Default" />
       <updated>1781427048071</updated>
       <workItem from="1781617158749" duration="2514000" />
-      <workItem from="1781684869226" duration="801000" />
+      <workItem from="1781684869226" duration="1609000" />
     </task>
     <servers />
   </component>
