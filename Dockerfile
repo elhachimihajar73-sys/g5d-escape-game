@@ -4,12 +4,12 @@ COPY . /var/www/html/
 
 RUN docker-php-ext-install pdo pdo_mysql
 
-# Activer mod_rewrite pour le routeur
 RUN a2enmod rewrite
 
-# Configurer Apache pour utiliser electricity_router.php
+# Page d'accueil = login.php
+RUN echo "DirectoryIndex login.php index.php index.html" > /etc/apache2/mods-enabled/dir.conf
+
 RUN echo '<Directory /var/www/html>\n\
-    Options Indexes FollowSymLinks\n\
     AllowOverride All\n\
     Require all granted\n\
 </Directory>' >> /etc/apache2/apache2.conf
