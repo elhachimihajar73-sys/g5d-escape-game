@@ -34,11 +34,6 @@ class Router {
             case 'dashboard':
                 require_once __DIR__ . '/../dashboard.php';
                 break;
-            case 'ldr':
-                require_once __DIR__ . '/../app/controllers/ElectricityController.php';
-                $controller = new ElectricityController();
-                $controller->recevoirLDR();
-                break;
             default:
                 require_once __DIR__ . '/../login.php';
         }
