@@ -32,7 +32,7 @@ function validerCode() {
     const code = ['p1','p2','p3','p4'].map(id => document.getElementById(id).value).join('');
     const msg = document.getElementById('message-resultat');
 
-    fetch('/g5d-escape-game/electricity_router.php?page=electricity&action=valider', {
+    fetch('electricity_router.php?page=electricity&action=valider', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code: code })
@@ -53,6 +53,11 @@ function validerCode() {
                 msg.classList.add('error');
                 msg.textContent = '❌ Code incorrect. Réessayez !';
             }
+        })
+        .catch(() => {
+            msg.classList.remove('hidden');
+            msg.classList.add('error');
+            msg.textContent = '❌ Erreur de connexion.';
         });
 }
 
@@ -64,7 +69,17 @@ function deverrouillerBouton() {
     btn.classList.add('unlocked');
     btn.textContent = '⚡ ACTIVER LA LUMIÈRE';
     btn.onclick = () => {
-        btn.textContent = '💡 LUMIÈRE ALLUMÉE !';
-        btn.style.background = '#4cff4c';
+        fetch('electricity_router.php?action=activer_led', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ led: 1 })
+        })
+            .then(r => r.json())
+            .then(data => {
+                if (data.succes) {
+                    btn.textContent = '💡 LUMIÈRE ALLUMÉE !';
+                    btn.style.background = '#4cff4c';
+                }
+            });
     };
 }
