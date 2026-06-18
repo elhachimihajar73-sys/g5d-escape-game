@@ -22,6 +22,8 @@ class Router {
                 $controller = new ElectricityController();
                 if ($action === 'valider') {
                     $controller->validerCode();
+                } elseif ($action === 'activer_led') {
+                    $controller->activerLed();
                 } else {
                     $controller->index();
                 }
@@ -34,6 +36,7 @@ class Router {
             case 'dashboard':
                 require_once __DIR__ . '/../dashboard.php';
                 break;
+
             default:
                 require_once __DIR__ . '/../login.php';
         }
