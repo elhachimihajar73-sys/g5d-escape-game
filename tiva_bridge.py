@@ -19,7 +19,7 @@ except Exception as e:
 
 dernier_etat = None
 led_allumee  = False
-compteur     = 0  # pour vérifier commande toutes les 4 boucles (~2 sec)
+compteur     = 0
 
 def envoyer_etat(etat, valeur):
     payload = {
@@ -38,13 +38,12 @@ def envoyer_etat(etat, valeur):
         print(f"✗ Erreur réseau : {e}")
 
 def verifier_commande_led():
-    """Vérifie si le site web a demandé d'allumer la LED"""
     global led_allumee
     try:
         r = requests.get(URL_API + "?action=get_commande", timeout=3)
         data = r.json()
         if data.get('allumer_led') and not led_allumee:
-            ser.write(b'ALLUMER\n')  # envoie commande à la TIVA
+            ser.write(b'ALLUMER\n')
             led_allumee = True
             print("[CMD] → TIVA : ALLUMER LED")
     except Exception as e:
@@ -52,7 +51,6 @@ def verifier_commande_led():
 
 while True:
     try:
-        # Vérifie commande site → TIVA toutes les ~2 secondes
         compteur += 1
         if compteur >= 4:
             verifier_commande_led()
@@ -64,18 +62,14 @@ while True:
 
         print(f"← TIVA : {ligne}")
 
-        # Bouton physique appuyé
+        # Bouton physique OU commande Python → LED allumée
         if ligne == "REACTOR_ACTIVATED":
             etat   = "LIGHT_ON"
             valeur = 4095
 
-        # Valeur LDR brute (accepte "LDR=2150" et "LDR = 2150")
+        # LDR ignorée — on se base uniquement sur REACTOR_ACTIVATED
         elif "LDR" in ligne:
-            match = re.search(r"LDR\s*=\s*(\d+)", ligne)
-            if not match:
-                continue
-            valeur = int(match.group(1))
-            etat   = "LIGHT_ON" if valeur > 2500 else "LIGHT_OFF"
+            continue
 
         else:
             continue
