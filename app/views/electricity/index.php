@@ -54,6 +54,22 @@
             🔒 ACTIVER LA LUMIÈRE
         </button>
     </div>
+
+    <!-- Bouton Reset discret pour les tests -->
+    <div style="margin-top: 40px; text-align: center;">
+        <button onclick="resetProgression()" style="
+            background: transparent;
+            color: #555;
+            border: 1px dashed #555;
+            padding: 6px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            opacity: 0.5;
+        " onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">
+            🔄 Reset (dev)
+        </button>
+    </div>
 </div>
 
 <div id="overlay-bloque" class="overlay">
@@ -64,5 +80,24 @@
 </div>
 
 <script src="/public/js/electricity.js"></script>
+
+<script>
+    function resetProgression() {
+        if (!confirm('Remettre la progression à zéro ?')) return;
+
+        fetch('reset_progression.php', { method: 'POST' })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    alert('✅ ' + data.message);
+                    location.reload();
+                } else {
+                    alert('❌ Erreur : ' + data.message);
+                }
+            })
+            .catch(err => alert('❌ Erreur réseau : ' + err));
+    }
+</script>
+
 </body>
 </html>
