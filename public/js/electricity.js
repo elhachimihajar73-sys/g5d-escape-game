@@ -32,7 +32,7 @@ function validerCode() {
     const code = ['p1','p2','p3','p4'].map(id => document.getElementById(id).value).join('');
     const msg = document.getElementById('message-resultat');
 
-    fetch('electricity_router.php?page=electricity&action=valider', {
+    fetch('/electricity_router.php?page=electricity&action=valider', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code: code })
@@ -69,7 +69,7 @@ function deverrouillerBouton() {
     btn.classList.add('unlocked');
     btn.textContent = '⚡ ACTIVER LA LUMIÈRE';
     btn.onclick = () => {
-        fetch('electricity_router.php?action=activer_led', {
+        fetch('/electricity_router.php?page=electricity&action=activer_led', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ led: 1 })
