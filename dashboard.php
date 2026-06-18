@@ -7,13 +7,6 @@ if(!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// ── Reset jeu ──────────────────────────────────────────────────────────────
-$reset_msg = '';
-if (isset($_POST['reset_game'])) {
-    $pdo->prepare("UPDATE progression SET progress = 0, led_activee = 0 WHERE salle = 'G5D'")->execute();
-    $reset_msg = '✅ Jeu remis à zéro !';
-}
-
 $stmt = $pdo->query("SELECT * FROM G5D_capteur_logs ORDER BY date_mesure DESC LIMIT 20");
 $logs = $stmt->fetchAll();
 
@@ -53,32 +46,6 @@ foreach(array_reverse($logs) as $log) {
         td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #ccc; }
         tr:hover td { background: rgba(0,255,157,0.05); }
         .refresh-info { text-align: center; color: #666; font-size: 0.8rem; margin-top: 20px; }
-
-        /* ── Reset button ── */
-        .reset-card { text-align: center; }
-        .btn-reset {
-            font-family: 'Orbitron', monospace;
-            background: transparent;
-            border: 2px solid #ff4444;
-            color: #ff4444;
-            padding: 12px 35px;
-            border-radius: 40px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            letter-spacing: 2px;
-            transition: all 0.3s ease;
-        }
-        .btn-reset:hover {
-            background: #ff4444;
-            color: white;
-            box-shadow: 0 0 20px rgba(255,68,68,0.4);
-            transform: translateY(-2px);
-        }
-        .reset-success {
-            margin-top: 12px;
-            color: var(--primary);
-            font-size: 0.95rem;
-        }
     </style>
 </head>
 <body>
@@ -87,20 +54,6 @@ foreach(array_reverse($logs) as $log) {
 
 <div class="container">
     <h1>📊 DONNÉES CAPTEURS G5D</h1>
-
-    <!-- ── Bouton Reset ── -->
-    <div class="data-card reset-card">
-        <h2>🔄 CONTRÔLE DE PARTIE</h2>
-        <form method="POST" action="dashboard.php"
-              onsubmit="return confirm('Remettre le jeu à zéro ?')">
-            <button type="submit" name="reset_game" class="btn-reset">
-                🔄 RESET LA PARTIE
-            </button>
-        </form>
-        <?php if ($reset_msg): ?>
-            <p class="reset-success"><?= $reset_msg ?></p>
-        <?php endif; ?>
-    </div>
 
     <div class="data-card">
         <h2>📈 ÉVOLUTION DU CAPTEUR LDR</h2>
