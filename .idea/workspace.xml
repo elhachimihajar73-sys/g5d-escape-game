@@ -5,10 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ac22756a-1d8c-4712-acae-01e27a9ec1b3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/electricity_router.php" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/electricity_router.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/g5d-escape-game.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/g5d-escape-game.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tiva_bridge.py" beforeDir="false" afterPath="$PROJECT_DIR$/tiva_bridge.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +86,7 @@
       <option name="presentableId" value="Default" />
       <updated>1781427048071</updated>
       <workItem from="1781617158749" duration="2514000" />
-      <workItem from="1781684869226" duration="23682000" />
+      <workItem from="1781684869226" duration="25411000" />
     </task>
     <servers />
   </component>

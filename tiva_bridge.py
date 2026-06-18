@@ -1,6 +1,5 @@
 import serial
 import requests
-import re
 import time
 
 PORT_COM    = "COM3"
@@ -17,21 +16,21 @@ except Exception as e:
     print(f"✗ Erreur port série : {e}")
     exit()
 
-dernier_etat = None
-led_allumee  = False
-compteur     = 0
+led_allumee         = False
+compteur            = 0
+derniere_valeur_ldr = None
 
-def envoyer_etat(etat, valeur):
+def envoyer_ldr(valeur):
     payload = {
         "cle":    CLE_SECRETE,
-        "etat":   etat,
+        "etat":   "LIGHT_ON" if valeur > 2000 else "LIGHT_OFF",
         "valeur": valeur
     }
     try:
         r = requests.post(URL_API, json=payload, timeout=5)
         rep = r.json()
         if rep.get('succes'):
-            print(f"✓ Envoyé : {etat} (LDR={valeur})")
+            print(f"✓ LDR envoyée : {valeur}")
         else:
             print(f"✗ Erreur API : {rep}")
     except Exception as e:
@@ -42,10 +41,19 @@ def verifier_commande_led():
     try:
         r = requests.get(URL_API + "?action=get_commande", timeout=3)
         data = r.json()
-        if data.get('allumer_led') and not led_allumee:
+
+        code_valide = data.get('allumer_led', False)
+        progress_ok = data.get('progress', 0) == 1
+
+        if code_valide and progress_ok and not led_allumee:
             ser.write(b'ALLUMER\n')
             led_allumee = True
             print("[CMD] → TIVA : ALLUMER LED")
+
+        elif not progress_ok and led_allumee:
+            led_allumee = False
+            print("[RESET] Progression remise à 0")
+
     except Exception as e:
         print(f"✗ Erreur commande LED : {e}")
 
@@ -62,22 +70,20 @@ while True:
 
         print(f"← TIVA : {ligne}")
 
-        # Bouton physique OU commande Python → LED allumée
-        if ligne == "REACTOR_ACTIVATED":
-            etat   = "LIGHT_ON"
-            valeur = 4095
+        if ligne.startswith("LDR ="):
+            try:
+                valeur_ldr = int(ligne.split("=")[1].strip())
 
-        # LDR ignorée — on se base uniquement sur REACTOR_ACTIVATED
-        elif "LDR" in ligne:
-            continue
+                if derniere_valeur_ldr is None or abs(valeur_ldr - derniere_valeur_ldr) > 50:
+                    envoyer_ldr(valeur_ldr)
+                    derniere_valeur_ldr = valeur_ldr
 
-        else:
-            continue
+            except ValueError:
+                pass
 
-        # Envoie à l'API seulement si l'état change
-        if etat != dernier_etat:
-            envoyer_etat(etat, valeur)
-            dernier_etat = etat
+        elif ligne == "REACTOR_ACTIVATED":
+            envoyer_ldr(4095)
+            derniere_valeur_ldr = 4095
 
     except Exception as e:
         print(f"✗ Erreur lecture : {e}")
