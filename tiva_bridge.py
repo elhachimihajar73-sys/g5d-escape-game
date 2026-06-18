@@ -42,15 +42,14 @@ def verifier_commande_led():
         r = requests.get(URL_API + "?action=get_commande", timeout=3)
         data = r.json()
 
-        code_valide = data.get('allumer_led', False)
-        progress_ok = data.get('progress', 0) == 1
+        allumer = data.get('allumer_led', False)
 
-        if code_valide and progress_ok and not led_allumee:
+        if allumer and not led_allumee:
             ser.write(b'ALLUMER\n')
             led_allumee = True
             print("[CMD] → TIVA : ALLUMER LED")
 
-        elif not progress_ok and led_allumee:
+        elif not allumer and led_allumee:
             led_allumee = False
             print("[RESET] Progression remise à 0")
 
