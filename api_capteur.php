@@ -20,9 +20,7 @@ function getPDO($cfg) {
     return $pdo;
 }
 
-// ══════════════════════════════════════════════════
 // GET ?action=get_commande → Python vérifie si LED doit s'allumer
-// ══════════════════════════════════════════════════
 if (isset($_GET['action']) && $_GET['action'] === 'get_commande') {
     try {
         $pdo = getPDO($pdo_config);
@@ -37,9 +35,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'get_commande') {
     exit;
 }
 
-// ══════════════════════════════════════════════════
-// POST → Python envoie état LDR + logs
-// ══════════════════════════════════════════════════
+// POST → Python envoie valeur LDR pour logs uniquement
 $CLE_SECRETE = "g5d_escape_2024";
 $data = json_decode(file_get_contents('php://input'), true);
 
@@ -55,20 +51,12 @@ $valeur = $data['valeur'] ?? 0;
 try {
     $pdo = getPDO($pdo_config);
 
-    // Log LDR dans G5D_capteur_logs
+    // Log LDR uniquement — progress géré par le code PIN dans ElectricityController
     $stmt = $pdo->prepare("
         INSERT INTO G5D_capteur_logs (valeur, date_mesure, capteur, unite)
         VALUES (:valeur, NOW(), 'LDR', 'ADC')
     ");
     $stmt->execute([':valeur' => $valeur]);
-
-    // Si lumière détectée → progression 100%
-    if ($etat === 'LIGHT_ON') {
-        $stmt2 = $pdo->prepare("
-            UPDATE progression SET progress = 100 WHERE salle = 'G5D'
-        ");
-        $stmt2->execute();
-    }
 
     echo json_encode(['succes' => true, 'etat' => $etat]);
 
