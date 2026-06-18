@@ -77,9 +77,9 @@ if(isset($_SESSION['user_id'])) {
         <span class="logo-text">Escape Game - G5D</span>
     </div>
     <div class="nav-center">
-        <a href="accueil.php" class="nav-btn">🏠 Accueil</a>
-        <a href="gestion_capteurs.php" class="nav-btn">⚙️ Capteurs</a>
-        <a href="dashboard.php" class="nav-btn">📊 Données</a>
+        <a href="/g5d-escape-game/accueil.php" class="nav-btn">🏠 Accueil</a>
+        <a href="/g5d-escape-game/gestion_capteurs.php" class="nav-btn">⚙️ Capteurs</a>
+        <a href="/g5d-escape-game/dashboard.php" class="nav-btn">📊 Données</a>
     </div>
     <div class="nav-links">
         <?php if(isset($_SESSION['user_id'])): ?>
@@ -144,7 +144,7 @@ if(isset($_SESSION['user_id'])) {
 <script>
     function goToRoom() {
         <?php if(isset($_SESSION['user_id'])): ?>
-        window.location.href = 'electricity_router.php?page=electricity';
+        window.location.href = '/g5d-escape-game/electricity_router.php?page=electricity';
         <?php else: ?>
         if(confirm('Veuillez vous connecter pour accéder à la salle Électricité')) {
             window.location.href = 'login.php';
