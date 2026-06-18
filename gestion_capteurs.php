@@ -11,20 +11,23 @@ $stmt = $pdo->query("SELECT * FROM G5D_capteur_logs WHERE capteur = 'LDR' ORDER 
 $lastLdr = $stmt->fetch();
 
 $valeurLdr = $lastLdr ? $lastLdr['valeur'] : null;
-$uniteLdr = $lastLdr ? $lastLdr['unite'] : 'lux';
+$uniteLdr = $lastLdr ? $lastLdr['unite'] : 'ADC';
 
-if($valeurLdr !== null && $valeurLdr < 100) {
+if($valeurLdr !== null && $valeurLdr > 3000) {
     $etatLdr = "Obscurité détectée";
 } else {
     $etatLdr = "Lumière détectée";
 }
 
-$etatLed = ($etatLdr === "Obscurité détectée") ? "Prête à s'allumer" : "Éteinte";
-?>
 $progress = getProgress($_SESSION['user_id']);
-$enigmeResolue = $progress && $progress['salle_electricite'] >= 100;
+
 $capteurObscurite = ($etatLdr === "Obscurité détectée");
+$enigmeResolue = $progress && $progress['salle_electricite'] >= 100;
 $systemeDeverrouille = $capteurObscurite && $enigmeResolue;
+
+$etatLed = $systemeDeverrouille ? "Allumée" : "Éteinte";
+?>
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -40,17 +43,6 @@ $systemeDeverrouille = $capteurObscurite && $enigmeResolue;
 
 <body class="room-dashboard">
 
-
-    <div class="nav-links">
-        <a href="dashboard.php" class="nav-btn">
-            Retour salle
-        </a>
-
-        <a href="logout.php" class="nav-btn">
-            Déconnexion
-        </a>
-    </div>
-</nav>
 
 <nav class="glass-nav">
     <div class="logo">
