@@ -1,11 +1,30 @@
 <?php
 session_start();
+require_once 'config/database.php';
 
 if(!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();
 }
+
+$stmt = $pdo->query("SELECT * FROM G5D_capteur_logs WHERE capteur = 'LDR' ORDER BY date_mesure DESC LIMIT 1");
+$lastLdr = $stmt->fetch();
+
+$valeurLdr = $lastLdr ? $lastLdr['valeur'] : null;
+$uniteLdr = $lastLdr ? $lastLdr['unite'] : 'lux';
+
+if($valeurLdr !== null && $valeurLdr < 100) {
+    $etatLdr = "Obscurité détectée";
+} else {
+    $etatLdr = "Lumière détectée";
+}
+
+$etatLed = ($etatLdr === "Obscurité détectée") ? "Prête à s'allumer" : "Éteinte";
 ?>
+$progress = getProgress($_SESSION['user_id']);
+$enigmeResolue = $progress && $progress['salle_electricite'] >= 100;
+$capteurObscurite = ($etatLdr === "Obscurité détectée");
+$systemeDeverrouille = $capteurObscurite && $enigmeResolue;
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -69,12 +88,15 @@ if(!isset($_SESSION['user_id'])) {
 
         <div class="info-row">
             <span class="info-label">État actuel</span>
-            <span class="info-value">Obscurité détectée</span>
+            <span class="info-value"><?php echo $etatLdr; ?></span>
+
         </div>
 
         <div class="info-row">
             <span class="info-label">Valeur mesurée</span>
-            <span class="info-value">120 lux</span>
+            <span class="info-value">
+                <?php echo $valeurLdr !== null ? $valeurLdr . ' ' . htmlspecialchars($uniteLdr) : 'Aucune donnée'; ?>
+            </span>
         </div>
     </details>
 
@@ -90,7 +112,7 @@ if(!isset($_SESSION['user_id'])) {
 
         <div class="info-row">
             <span class="info-label">État actuel</span>
-            <span class="info-value">Éteinte</span>
+            <span class="info-value"><?php echo $etatLed; ?></span>
         </div>
 
         <div class="info-row">
@@ -103,31 +125,19 @@ if(!isset($_SESSION['user_id'])) {
         <summary>Conditions de déverrouillage</summary>
 
         <label class="condition-line">
-            <input type="checkbox" checked disabled>
+            <input type="checkbox" <?php echo $capteurObscurite ? 'checked' : ''; ?> disabled>
             Capteur dans l'obscurité
         </label>
 
         <label class="condition-line">
-            <input type="checkbox" disabled>
-            Énigme 1 résolue
+            <input type="checkbox" <?php echo $enigmeResolue ? 'checked' : ''; ?> disabled>
+            Énigme résolue
         </label>
 
         <label class="condition-line">
-            <input type="checkbox" disabled>
-            Énigme 2 résolue
+            <input type="checkbox" <?php echo $systemeDeverrouille ? 'checked' : ''; ?> disabled>
+            Système déverrouillé
         </label>
-
-        <label class="condition-line">
-            <input type="checkbox" disabled>
-            Énigme 3 résolue
-        </label>
-
-        <label class="condition-line">
-            <input type="checkbox" disabled>
-            Énigme 4 résolue
-        </label>
-
-
     </details>
 
 </div>
