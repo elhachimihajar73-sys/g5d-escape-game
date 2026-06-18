@@ -69,6 +69,15 @@ $etatLed = $systemeDeverrouille ? "Allumée" : "Éteinte";
     <div class="room-title">
         <h1>GESTION DES CAPTEURS ET ACTIONNEURS</h1>
     </div>
+    <div class="capteur-card">
+        <h3>DEBUG</h3>
+        <p>Valeur LDR : <?php echo $valeurLdr ?? 'null'; ?></p>
+        <p>État LDR : <?php echo $etatLdr; ?></p>
+        <p>Progression : <?php echo $progress['salle_electricite'] ?? 'aucune'; ?></p>
+        <p>Capteur obscurité : <?php echo $capteurObscurite ? 'oui' : 'non'; ?></p>
+        <p>Énigme résolue : <?php echo $enigmeResolue ? 'oui' : 'non'; ?></p>
+        <p>Système déverrouillé : <?php echo $systemeDeverrouille ? 'oui' : 'non'; ?></p>
+    </div>
 
     <details class="capteur-card">
         <summary>État du capteur de lumière (LDR)</summary>
